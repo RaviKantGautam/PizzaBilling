@@ -1,0 +1,79 @@
+<html>
+<head>
+<title>Add_New_Category.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #808080; font-style: italic;}
+.s1 { color: #000000;}
+.s2 { color: #000080; font-weight: bold;}
+.s3 { color: #008080; font-weight: bold;}
+.s4 { color: #0000ff;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Add_New_Category.py</font>
+</center></td></tr></table>
+<pre><span class="s0"># from tkinter import *</span>
+# from pymysql import *
+<span class="s2">from </span>tkinter.messagebox <span class="s2">import </span>*
+<span class="s0"># from tkinter.ttk import *</span>
+<span class="s2">from </span>viewcategory <span class="s2">import </span>*
+
+con = connect(<span class="s3">&quot;127.0.0.1&quot;</span>,<span class="s3">&quot;root&quot;</span>,<span class="s3">&quot;ravi&quot;</span>,<span class="s3">&quot;pizzaproject&quot;</span>)
+
+<span class="s2">class </span>Add_New_Catogory:
+    <span class="s2">def </span>example(self):
+        <span class="s2">global </span>con
+        cr = con.cursor()
+        <span class="s2">try</span>:
+            <span class="s2">if </span>self.CategoryNameEntry.get()==<span class="s3">&quot;&quot; </span><span class="s2">and </span>len(self.DescriptionEntry.get(<span class="s4">0.1</span>,END))==<span class="s4">1</span>:
+                print(<span class="s3">&quot;wrong&quot;</span>)
+            <span class="s2">else</span>:
+                s = <span class="s3">&quot;insert into categorytable values ('&quot;</span>+self.CategoryNameEntry.get()+<span class="s3">&quot;','&quot;</span>+ self.DescriptionEntry.get(<span class="s4">0.1</span>,END) +<span class="s3">&quot;')&quot;</span>
+                res = cr.execute(s)
+                con.commit()
+                showinfo(<span class="s3">&quot;&quot;</span>,<span class="s3">&quot;Data Inserted successfull&quot;</span>+str(res))
+                self.tss.set(<span class="s3">&quot;&quot;</span>)
+                self.DescriptionEntry.delete(<span class="s4">0.1</span>,END)
+        <span class="s2">except </span>Exception <span class="s2">as </span>e:
+            print(e)
+
+
+    <span class="s2">def </span>__init__(self):
+        self.root = Tk()
+        <span class="s0">#self.root.geometry(&quot;400x300&quot;)</span>
+        self.root.resizable(<span class="s4">0</span>,<span class="s4">0</span>)
+        self.root.configure(background=<span class="s3">&quot;skyblue&quot;</span>)
+        self.root.title(<span class="s3">&quot;Add New Category&quot;</span>)
+        img = PhotoImage(file=<span class="s3">&quot;recipe-pizza-pollo-arrosto.png&quot;</span>)
+        Label(self.root, image=img).place(x=<span class="s4">0</span>, y=<span class="s4">0</span>)
+        <span class="s0">#self.title = Label(self.root, text=&quot;Add New Category&quot;)</span>
+        self.CategoryName = Label(self.root, text=<span class="s3">&quot;Enter Category Name:&quot;</span>)
+        self.tss = StringVar()
+        self.CategoryNameEntry = Entry(self.root, width=<span class="s4">20</span>,textvariable=self.tss)
+        self.Description = Label(self.root, text=<span class="s3">&quot;Description&quot;</span>)
+        self.DescriptionEntry = Text(self.root, width=<span class="s4">15</span>, height=<span class="s4">3</span>)
+        self.submit = Button(self.root, text=<span class="s3">&quot;Submit&quot;</span>, command=self.example)
+        self.close = Button(self.root, text=<span class="s3">&quot;Cancel&quot;</span>, command=self.root.destroy)
+
+
+        self.Description.grid(row=<span class="s4">2</span>, column=<span class="s4">0</span>, ipadx=<span class="s4">10</span>, pady=<span class="s4">30</span>, padx=<span class="s4">5</span>,
+                                                                         ipady=<span class="s4">5</span>,sticky=W)
+        self.CategoryName.grid(row=<span class="s4">1</span>, column=<span class="s4">0</span>, ipadx=<span class="s4">10</span>, pady=<span class="s4">30</span>, padx=<span class="s4">5</span>,
+                                                                         ipady=<span class="s4">5</span>)
+        self.close.grid(row=<span class="s4">3</span>, column=<span class="s4">2</span>, ipadx=<span class="s4">10</span>, pady=<span class="s4">30</span>, padx=<span class="s4">15</span>,
+                                                                         ipady=<span class="s4">5</span>)
+        self.CategoryNameEntry.grid(row=<span class="s4">1</span>, column=<span class="s4">1</span>,columnspan=<span class="s4">2</span>, ipadx=<span class="s4">10</span>, pady=<span class="s4">30</span>, padx=<span class="s4">15</span>,
+                                                                         ipady=<span class="s4">5</span>)
+        self.DescriptionEntry.grid(row=<span class="s4">2</span>, column=<span class="s4">1</span>, columnspan=<span class="s4">2</span>, ipadx=<span class="s4">10</span>, pady=<span class="s4">30</span>, padx=<span class="s4">15</span>,
+                                                                         ipady=<span class="s4">5</span>)
+        self.submit.grid(row=<span class="s4">3</span>, column=<span class="s4">1</span>, ipadx=<span class="s4">10</span>, pady=<span class="s4">30</span>, padx=<span class="s4">15</span>,
+                                                                         ipady=<span class="s4">5</span>)
+
+        self.root.mainloop()
+<span class="s0">#obj = Add_New_Catogory()</span></pre>
+</body>
+</html>
