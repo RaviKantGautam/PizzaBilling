@@ -21,3 +21,4 @@ Here I have used MYSQL database for storing records and managing of daily Transa
 
 ## Other Details -
 I have used Tkinter Library support for GUI interaction.
+This Project is made in Python 3 version.
